@@ -1,0 +1,77 @@
+plugins {
+    id "java"
+    id "org.sonarqube" version "2.7"
+    id 'maven-publish'
+}
+
+
+group    = findProperty("project.group") ?: "com.intuit.commons"
+version  = findProperty("project.version") ?: "${new Date().format('yyyy_MMdd_HHmmss')}-SNAPSHOT"
+
+def PUBLISH_URI = findProperty("PUBLISH_URL") ?: ""
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+
+        mavenCentral()
+    }
+}
+
+
+dependencies {
+
+    compile 'org.slf4j:slf4j-api:1.7.13'
+
+    // For Collections, Iterators, Predicates, etc.
+    compile 'org.apache.commons:commons-collections4:4.1'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.3.7'
+    testCompile 'org.jmockit:jmockit:1.20'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.slf4j:slf4j-simple:1.7.13'
+
+}
+
+sonarqube {
+    properties {
+        property "sonar.host.url", System.getenv("SONARQUBE_SERVER_URL")
+        property "sonar.login", System.getenv("SONARQUBE_USERNAME")
+        property "sonar.password", System.getenv("SONARQUBE_PASSWORD")
+    }
+}
+
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+
+    }
+    repositories {
+        maven {
+            url(uri(PUBLISH_URI))
+            credentials {
+                username = System.getenv("PUBLISH_REPO_USERNAME")
+                password = System.getenv("PUBLISH_REPO_PASSWORD")
+            }
+        }
+    }
+}
+
