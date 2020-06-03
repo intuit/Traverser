@@ -1,6 +1,7 @@
 <p align="center">
 <img src="logo.png" height="120" width="120"/>
  </p>
+ 
 # Traverser: java library to walk object graph
 
 <!-- add badges -->
