@@ -103,18 +103,6 @@ public interface TraverseVisitor<T, C extends TraverseContext<T>> {
                 .build();
     }
     
-    static <T, U, V> Traverser.Action adapt (TraverseContext<? super T> context, BiFunction<? super T, ? super U, ? extends V> delegateTo) {
-        Object result = delegateTo.apply((T)context.thisNode(), context.getResult());
-        context.setResult(result);
-        
-        return RESULT_TO_ACTION.getOrDefault(result, Traverser.Action.CONTINUE);
-    }
-    
-    static final Map<Object, Traverser.Action> RESULT_TO_ACTION = new Flat3Map<Object, Traverser.Action>() {{
-        put(Markers.QUIT, Traverser.Action.QUIT);
-        put(Markers.SKIP, Traverser.Action.SKIP);
-    }};
-    
     /**
      * 
      * @param <T> type

@@ -1,4 +1,8 @@
-# <img src="logo.png" height="60" width="60"/> Traverser: java library to walk object graph
+<p align="center">
+<img src="logo.png" height="120" width="120"/>
+ </p>
+ 
+# Traverser: java library to walk object graph
 
 <!-- add badges -->
 
@@ -66,11 +70,31 @@ Company
 
 ### Integration: children provider  
 
-Once of benefits of using generic traversing mechanism is to decouple actual traversing from data structure it is beeing operated on.
-Regardles of the way data is organized, core algorithms does not change. But data, root element(s) as well as immediate children for a given elements must be be known to traverser in some way, so the algorithm can move to next iteration.  
+Once of benefits of using generic traversing mechanism is to decouple actual traversing from data structure it is being operated on.
+Regardless of the way data is organized, core algorithms does not change. But data, root element(s) as well as immediate children for a given elements must be be known to traverser in some way, so the algorithm can move to next iteration.  
 
-Children proivder or simply *\<FUNCTION\>* indicates such function, which feeds traverser with children of current given element.
-It could be passed as lamda-function or method reference or any other applicable means.  
+Children provider or simply *\<FUNCTION\>* indicates such function, which feeds traverser with children of current given element.
+It could be passed as lamda-function or method reference or any other applicable means. 
+
+Children provider should expect a given node or parent object and output is a collection of child nodes.
+
+In more general case, it is possible for child provider to create and return traverser context based on current item at hand.
+
+The simplest way to provide children function (`Node::getChildren`):
+
+```java
+
+Traverser<Node<String>, TraverseContext<Node<String>>>  traveser = Traverser.<Node<String>>depthFirst(Node::getChildren);
+//.....
+ class Node<T> {
+        T data;
+        List<Node<T>> children = new ArrayList<>();
+        List<Node<T>> getChildren () {
+            return children;
+        }
+  }
+
+```
 
 ### Iterator
 Iteration is build on top of graph/tree traversal and shares common API.
