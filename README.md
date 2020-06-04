@@ -1,6 +1,10 @@
-<p align="center">
-<img src="logo.png" height="120" width="120"/>
- </p>
+<p align="center"><img src="logo.png" height="120" width="120"/>
+ 
+[![Build Status](https://circleci.com/gh/intuit/Traverser.svg?style=shield&circle-token=536af10b7afa24ed4989946d5236d9776783aaac)](https://app.circleci.com/pipelines/github/intuit/Traverser) [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/traverser)
+</p>
+<hr />
+
+
  
 # Traverser: java library to walk object graph
 
