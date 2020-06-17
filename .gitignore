@@ -8,6 +8,7 @@ gradle
 .project
 .settings/
 .nb-gradle/
+.secret
 */out/
 *.iws
 gradlew

@@ -46,7 +46,7 @@ Maven:
 ```
 
 ## Learn by example 
-Represnting hierarchy of a medium-sized company is good example to illustrate key features of the traverser.  
+Representing hierarchy of a medium-sized company is good example to illustrate key features of the traverser.  
 ```
 Company 
     Bussiness Entity
@@ -62,13 +62,16 @@ Company
          Product Development
               John Smith
               Lucy Gold
-              Sylvester Stallone
+              Sylvester Moonstone
          Sales Department
-              Nick Becker 
-              Ruby Klingemann 
+              Nick Citrine 
+              Kleo Ruby 
          Management
-              Anna Schulze                  
+              Anna Peridot                  
 ```
+
+_Disclaimer: Names, characters are businesses are used in fictitious manner. Any resemblance to actual persons, living or dead is purely coincidental._
+
 
 ## Explore 
 
@@ -127,14 +130,14 @@ Output:
 Company
 BU-Pacific
 PD=Product Development
-Sylvester Stallone
+Sylvester Moonstone
 John Smith
 Lucy Gold
 SL=Sales Department
-Nick Becker
-Ruby Klingemann
+Nick Citrine
+Kleo Ruby
 MG=Management
-Anna Schulze
+Anna Peridot
 ```
 
 ##### Move to next, perform an action: 
@@ -147,14 +150,14 @@ TraversingIterator<Company> i = Traverser.depthFirst(<FUNCTION>).postOrderIterat
 
 Output:
 ```
-Sylvester Stallone
+Sylvester Moonstone
 John Smith
 Lucy Gold
 PD=Product Development
-Nick Becker
-Ruby Klingemann
+Nick Citrine
+Kleo Ruby
 SL=Sales Department
-Anna Schulze
+Anna Peridot
 MG=Management
 BU-Pacific
 Company
@@ -178,12 +181,12 @@ BU-Pacific
 PD=Product Development
 SL=Sales Department
 MG=Management
-Sylvester Stallone
+Sylvester Moonstone
 John Smith
 Lucy Gold
-Nick Becker
-Ruby Klingemann
-Anna Schulze
+Nick Citrine
+Kleo Ruby
+Anna Peridot
 ```
 
 
@@ -201,12 +204,12 @@ BU-Pacific
 PD=Product Development
 SL=Sales Department
 MG=Management
-Sylvester Stallone
+Sylvester Moonstone
 John Smith
 Lucy Gold
-Nick Becker
-Ruby Klingemann
-Anna Schulze
+Nick Citrine
+Kleo Ruby
+Anna Peridot
 ```
 ### Manipulating traversal flow 
 Traveser accepts [visitors](https://en.wikipedia.org/wiki/Visitor_pattern) which can be used to take action on a given node.
