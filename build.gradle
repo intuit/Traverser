@@ -2,23 +2,23 @@ plugins {
     id "java"
     id "org.sonarqube" version "2.7"
     id 'maven-publish'
+    id 'signing'
 }
 
 
 group    = findProperty("project.group") ?: "com.intuit.commons"
 version  = findProperty("project.version") ?: "${new Date().format('yyyy_MMdd_HHmmss')}-SNAPSHOT"
+def PUBLISH_URI = findProperty("PUBLISH_URL") ?: "https://oss.sonatype.org/content/repositories/snapshots"
+def PUBLISH_USER = findProperty("ossrhUsername") ?: null
+def PUBLISH_PASSWORD =  findProperty("ossrhPassword") ?: null
 
-def PUBLISH_URI = findProperty("PUBLISH_URL") ?: ""
-
-allprojects {
-    repositories {
-        mavenLocal()
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-        }
-
-        mavenCentral()
+repositories {
+    mavenLocal()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
     }
+
+    mavenCentral()
 }
 
 
@@ -44,7 +44,6 @@ sonarqube {
     }
 }
 
-
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
     classifier = 'sources'
@@ -61,17 +60,54 @@ publishing {
             from components.java
             artifact sourcesJar
             artifact javadocJar
-        }
 
+            pom {
+                name = 'Traverser'
+                description = 'Java library to traverse objects graph'
+                url = 'https://github.com/intuit/Traverser'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'gkesler'
+                        name = 'Greg Kesler'
+                        email = 'greg_kesler@intuit.com'
+                    }
+
+                    developer {
+                        id = 'amatiushkin'
+                        name = 'Alex Matiushkin'
+                        email = 'aleksandr_matiushkin@intuit.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/intuit/Traverser.git'
+                    developerConnection = 'scm:git:https://github.com/intuit/Traverser.git'
+                    url = 'https://github.com/intuit/Traverser'
+                }
+            }
+        }
     }
+
     repositories {
         maven {
             url(uri(PUBLISH_URI))
             credentials {
-                username = System.getenv("PUBLISH_REPO_USERNAME")
-                password = System.getenv("PUBLISH_REPO_PASSWORD")
+                username = PUBLISH_USER
+                password = PUBLISH_PASSWORD
             }
         }
     }
 }
 
+signing {
+    sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign) {
+    onlyIf { PUBLISH_USER != null && PUBLISH_PASSWORD != null }
+}
