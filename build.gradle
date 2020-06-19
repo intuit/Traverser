@@ -104,6 +104,26 @@ publishing {
     }
 }
 
+
+/**
+ *
+ * Generate manifest file for all components jars
+ */
+jar {
+    manifest {
+        def nameParts = project.version.toString().tokenize(".")
+        //  manifest
+        attributes(["Name" : "Intuit/Commons/Traverser/",
+                    "Extension-Name" :  project.name,
+                    "Specification-Version": nameParts[0],
+                    "Implementation-Version": project.version,
+                    "Sealed": true,
+                    "Created-By": System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')',
+                    "Built-With": "gradle-${project.getGradle().getGradleVersion()}, groovy-${GroovySystem.getVersion()}",
+                    "Built-On": "${InetAddress.localHost.hostName}/${InetAddress.localHost.hostAddress}"])
+    }
+}
+
 signing {
     sign publishing.publications.mavenJava
 }
