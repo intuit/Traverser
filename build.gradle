@@ -3,6 +3,7 @@ plugins {
     id "org.sonarqube" version "2.7"
     id 'maven-publish'
     id 'signing'
+    id "biz.aQute.bnd.builder" version "5.1.1"
 }
 
 
@@ -113,8 +114,7 @@ jar {
     manifest {
         def nameParts = project.version.toString().tokenize(".")
         //  manifest
-        attributes(["Name" : "Intuit/Commons/Traverser/",
-                    "Extension-Name" :  project.name,
+        attributes(["Extension-Name" :  project.name,
                     "Specification-Version": nameParts[0],
                     "Implementation-Version": project.version,
                     "Sealed": true,
