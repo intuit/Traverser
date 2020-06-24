@@ -1,0 +1,13 @@
+Bundle-SymbolicName: com.intuit.commons.traverser
+Bundle-Name: Traverser
+Bundle-Description: Traverser Java library
+Bundle-Vendor: Intuit Traverser Project
+Bundle-ContactAddress: https://opensource.intuit.com/
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Capability: osgi.ee;filter="(&(osgi.ee=JavaSE)(version>=1.8))
+
+-removeheaders: Private-Package
+
+-exportcontents:\
+    com.intuit.commons,\
+    com.intuit.commons.traverser
