@@ -33,14 +33,14 @@ It helps in several areas:
 Add dependency on this module and traverse any complex data structure.
 Gradle: 
 ```
- compile 'com.intuit.commons:traverser:alfa-0.1.0'
+ compile 'com.intuit.commons:traverser:1.0.0'
 ```
 Maven:
 ```
 <dependency>
     <groupId>com.intuit.commons</groupId>
     <artifactId>traverser</artifactId>
-    <version>alfa-0.1.0</version>
+    <version>1.0.0</version>
     <type>pom</type>
 </dependency>
 ```
