@@ -13,7 +13,7 @@ Detailed description of a change
 -->
 
 
-# alfa-0.1.0
+# 1.0.0
 ## Release Notes
 
 ### Extract traverser code from original codebase 
