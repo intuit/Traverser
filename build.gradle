@@ -24,17 +24,10 @@ repositories {
 
 
 dependencies {
-
-    compile 'org.slf4j:slf4j-api:1.7.13'
-
-    // For Collections, Iterators, Predicates, etc.
-    compile 'org.apache.commons:commons-collections4:4.1'
-
     testCompile 'org.codehaus.groovy:groovy-all:2.3.7'
     testCompile 'org.jmockit:jmockit:1.20'
     testCompile 'junit:junit:4.12'
     testCompile 'org.slf4j:slf4j-simple:1.7.13'
-
 }
 
 sonarqube {
