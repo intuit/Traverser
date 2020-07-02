@@ -17,11 +17,8 @@ package com.intuit.commons.traverser;
 
 import com.intuit.commons.Comparables;
 
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Function;
-import org.apache.commons.collections4.map.Flat3Map;
 
 /**
  * GoF Visitor @see <a href="https://www.oodesign.com/visitor-pattern.html">visitor-pattern</a> that
