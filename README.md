@@ -14,21 +14,23 @@
 
 Traverser solves a one of the most common tasks to operate on tree or graph data structure: 
 
-- flatten into collection or stream
-- perform an action during traversal 
-- control traversal flow 
+- enumerate tree or graph nodes into a traverse sequence
+- execute client actions on each enumerated node 
+- fine grained control of the traversal loop (continue, break, skip nodes)
 
 It exposes rich and fine level of capabilities like:
 - iterators 
 - both depth- and breadth- first search (DFS/BFS)
+- pre- and post- order actions
+- cycle detection
 - visitors
-- local / global context 
+- global and local node contexts
 
 It helps in several areas:
 - speed up implementation by re-using generic  solution (stable, tested, well-performant solution)
 - reduce codebase
 - expand and adjust use cases with simple changes
-- decouples traversing from data structure, which boosts maintenability
+- decouples traversing routine from data structure and client actions, which boosts maintenability
 
 ## Getting Started
 
@@ -48,6 +50,7 @@ Maven:
 ```
 
 ## Learn by example 
+
 Representing hierarchy of a medium-sized company is good example to illustrate key features of the traverser.  
 ```
 Company 
@@ -62,9 +65,9 @@ Snapshot of a virtual company staff:
 Company
      BU-Pacific  
          Product Development
+              Sylvester Moonstone
               John Smith
               Lucy Gold
-              Sylvester Moonstone
          Sales Department
               Nick Citrine 
               Kleo Ruby 
@@ -79,22 +82,26 @@ _Disclaimer: Names, characters are businesses are used in fictitious manner. Any
 
 ### Integration: children provider  
 
-Once of benefits of using generic traversing mechanism is to decouple actual traversing from data structure it is being operated on.
-Regardless of the way data is organized, core algorithms does not change. But data, root element(s) as well as immediate children for a given elements must be be known to traverser in some way, so the algorithm can move to next iteration.  
+One of benefits of using generic traversing mechanism is to decouple actual traversing from data structure it is being operated on.
+Regardless of the way data is organized, core algorithms does not change. But data, root element(s) as well as children of given parents must be be known to traverser in some way, so the algorithm can move to next iteration.  
 
-Children provider or simply *\<FUNCTION\>* indicates such function, which feeds traverser with children of current given element.
+Children provider is a *\<FUNCTION\>* that obtains children of a given parent element.
 It could be passed as lamda-function or method reference or any other applicable means. 
 
-Children provider should expect a given node or parent object and output is a collection of child nodes.
+In the simple form, children provider should expect a given node or parent object and output is a collection of child nodes.
+```java
+Function<T, Collection<T>>
+```
 
-In more general case, it is possible for child provider to create and return traverser context based on current item at hand.
-
-The simplest way to provide children function (`Node::getChildren`):
+In more general case, children provider obtains a stream of children ```TraverseContext``` for a given parent one. This allows to achieve great customization of the traversal sequence as well as ```TraverseContext``` representations in it. 
+```java
+BiFunction<Traverser<T, TraverseContext<T>, TraverseContext<T>, Stream<TraverseContext<T>>>>
+```
+Given tree node class definition below, the simplest way to provide children is to use method reference (`Node::getChildren`):
 
 ```java
 
-Traverser<Node<String>, TraverseContext<Node<String>>>  traveser = Traverser.<Node<String>>depthFirst(Node::getChildren);
-//.....
+// Tree node 
  class Node<T> {
         T data;
         List<Node<T>> children = new ArrayList<>();
@@ -102,24 +109,27 @@ Traverser<Node<String>, TraverseContext<Node<String>>>  traveser = Traverser.<No
             return children;
         }
   }
-
+...
+// Traverser for the tree with Node<T> nodes
+ Traverser<Node<String>, TraverseContext<Node<String>>>  traveser = Traverser.depthFirst(Node<String>::getChildren);
 ```
 
 ### Iterator
-Iteration is build on top of graph/tree traversal and shares common API.
+
+Iterator is build on top of graph/tree traversal and shares common API.
 There are 2 flavors (go deep or go broad) of direction and 2 flavours (before or after) of invocation.
-It give 4 total possible combinations of how iteration can be performed. 
+This yields 4 total possible combinations of how iteration can be performed. 
 
-
-
-Iterators are useful to "flatten" object structure into stream of objects.  
+Iterators allow to traverse the underlying tree or graph in a simple loop as if they were iterating over a sequence of tree or graph nodes.  
 
 #### Depth-First traversing   
 
-Depth-first always follows reference to child, when next item on current level:
+For a given tree or graph node, depth-first traversal always follows children before considering its siblings:
 
+##### perform an action, then move to next
 
-##### Perform an action, when move to next:
+Nodes are enumerated in the depth-first order 
+
 ```java
 Company c = new Company(); //
 // ...
@@ -142,7 +152,10 @@ MG=Management
 Anna Peridot
 ```
 
-##### Move to next, perform an action: 
+##### move to next, then perform an action:
+
+Nodes are enumerated in the depth-first reverse order 
+
 ```java
 Company c = new Company(); //
 // ...
@@ -168,8 +181,12 @@ Company
 
 #### Breadth-First traversing
 
-Breadth-first always follows next item on current level, when goes to reference to child.
-##### Perform an action, when move to next:
+For a given tree or graph node, breadth-first always follows siblings, before it considers its children.
+
+##### Perform an action, then move to next:
+
+Nodes are enumerated in the breadth-first order
+
 ```java
 Company c = new Company(); //
 // ...
@@ -192,7 +209,10 @@ Anna Peridot
 ```
 
 
-##### Move to next, perform an action:
+##### Move to next, then perform an action:
+
+Nodes are enumerated in breadth-first opposite order (same as breadth-first order)
+
 ```java
 Company c = new Company(); //
 // ...
@@ -213,12 +233,26 @@ Nick Citrine
 Kleo Ruby
 Anna Peridot
 ```
-### Manipulating traversal flow 
-Traveser accepts [visitors](https://en.wikipedia.org/wiki/Visitor_pattern) which can be used to take action on a given node.
+### Traversal loop control
+
+At the core, Traverser enumerates nodes in the internal traversal loop.       
+Traveser uses [visitors](https://en.wikipedia.org/wiki/Visitor_pattern) to take actions for each enumerated node.
+Result of these visitor's actions controls Traverser internal loop.
+
+* CONTINUE
+  
+  discover children of the current node and continue the loop
+    
+* SKIP
+
+  skip children of the current node, but continue the loop
+  
+* QUIT
+
+  quit (break) the loop
 
 
 #### Configuration
-
 
 It is possible to override `version` and `group` of the artifact:
 ```
