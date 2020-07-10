@@ -287,7 +287,7 @@ Assuming the Company structure above, the simplest way to provide children is to
  Traverser<Node, TraverseContext<Node>> traveser = Traverser.depthFirst(Node::getChildren);
 ```
 
-In general case, children provider obtains a stream of `TraverseContext` objects that wrap children of a given parent. 
+In general case, children provider obtains a stream of [TraverseContext](src/main/java/com/intuit/commons/TraverseContext.java) objects that wrap children of a given parent. 
 This allows to customize the traversal sequence as well as to customize `TraverseContext` objects that go into that sequence. 
 ```java
 BiFunction<Traverser<T, TraverseContext<T>, TraverseContext<T>, Stream<TraverseContext<T>>>>
