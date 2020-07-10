@@ -12,7 +12,7 @@
 
 <!-- add badges -->
 
-Traverser solves a one of the most common tasks to operate on tree or graph data structure: 
+[Traverser][Traverser] solves a one of the most common tasks to operate on tree or graph data structure: 
 
 - enumerate tree or graph nodes into a traverse sequence
 - execute client actions on each enumerated node 
@@ -287,7 +287,7 @@ Assuming the Company structure above, the simplest way to provide children is to
  Traverser<Node, TraverseContext<Node>> traveser = Traverser.depthFirst(Node::getChildren);
 ```
 
-In general case, children provider obtains a stream of [TraverseContext](src/main/java/com/intuit/commons/TraverseContext.java) objects that wrap children of a given parent. 
+In general case, children provider obtains a stream of [TraverseContext][TraverseContext] objects that wrap children of a given parent. 
 This allows to customize the traversal sequence as well as to customize `TraverseContext` objects that go into that sequence. 
 ```java
 BiFunction<Traverser<T, TraverseContext<T>, TraverseContext<T>, Stream<TraverseContext<T>>>>
@@ -305,13 +305,18 @@ Traverser<Node, TraverseContext<Node>> traverser = Traverser
 );
 ```
 
+### TraverseContext
+[TraverseContext][TraverseContext] represents an environment around a node in the traversal sequence. It contains a reference to the tree or graph node, reference to the parent `TraverseContext`, both local and "inherited" variables and optionally calculation result. 
+
 ### Iterator
 
-Iterator is build on top of graph/tree traversal and shares common API.
+[Iterator][TraversingIterator] is build on top of graph/tree traversal and shares common API.
 There are 2 flavors (go deep or go broad) of direction and 2 flavours (before or after) of invocation.
 This yields 4 total possible combinations of how iteration can be performed. 
 
-Iterators allow to traverse the underlying tree or graph in a simple loop as if they were iterating over a sequence of tree or graph nodes.  
+Iterators allow to traverse the underlying tree or graph in a simple loop as if they were iterating over a sequence of tree or graph nodes.
+> `TraversingIterator` has method `path` to obtain node's path to the root node the traversing started from. 
+It also can manipulate with the current `TraverseContext` via `replace` method.
 
 #### Depth-First traversing   
 
@@ -480,7 +485,7 @@ Anna Peridot
 
 At the core, Traverser enumerates nodes in the internal traversal loop.       
 Traveser uses [visitors](https://en.wikipedia.org/wiki/Visitor_pattern) to take actions for each enumerated node.
-Result of these visitor's actions controls Traverser internal loop.
+Result of these visitor's actions controls traverser internal loop.
 
 * `CONTINUE`
   
@@ -494,10 +499,10 @@ Result of these visitor's actions controls Traverser internal loop.
 
   quit (break) the loop
 
-Visitor's actions are methods of TraverseVisitor interface called by Traverser at the specific moment during traversal.
+Visitor's actions are methods of [TraverseVisitor][TraverseVisitor] interface called by [Traverser][Traverser] at the specific moment during traversal.
 When a Traverser is about to process a node very first time, it calls `enter` method, which is a **pre-order** action.
 If the result is `CONTINUE`, Traverser discovers children so they could be processed too.
-After all children the node have been processed, Traverser calls `leave` method to execute a **post-order** action.
+After all children the node have been processed, `Traverser` calls `leave` method to execute a **post-order** action.
 If a node has been already processed, Traverser calls `onBackRef` method to execute an action on a cyclicly referenced node.
 In order to avoid infinite recursion loop, Traverser does not discover children of such node, similar to the effect of `SKIP` action result.
 
@@ -603,3 +608,8 @@ About [opensource](https://opensource.intuit.com) at Intuit.
 ## Legal 
 
 Read more about license for this software [License](LICENSE).
+
+[Traverser]: src/main/java/com/intuit/commons/traverser/Traverser.java
+[TraverseContext]: src/main/java/com/intuit/commons/traverser/TraverseContext.java
+[TraversingIterator]: src/main/java/com/intuit/commons/traverser/TraversingIterator.java
+[TraverseVisitor]: src/main/java/com/intuit/commons/traverser/TraverseVisitor.java
