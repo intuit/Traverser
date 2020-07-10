@@ -49,6 +49,12 @@ Maven:
 </dependency>
 ```
 
+## Local Development
+
+```
+./gradlew build
+```
+
 ## Learn by example 
 
 Representing hierarchy of a medium-sized company is good example to illustrate key features of the traverser.  
@@ -593,13 +599,6 @@ This library depends on Apache `commons-collections` and `slf4j`.
 
 Welcome contributors!
  [CONTRIBUTING.md](.github/CONTRIBUTING.md).
-
-## Local Development
-
-```
-./gradlew test
-```
-
 
 ## Support
 
