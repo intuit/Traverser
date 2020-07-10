@@ -491,7 +491,7 @@ Anna Peridot
 
 At the core, Traverser enumerates nodes in the internal traversal loop.       
 Traveser uses [visitors](https://en.wikipedia.org/wiki/Visitor_pattern) to take actions for each enumerated node.
-Result of these visitor's actions controls traverser internal loop.
+Results of visitor's actions control traverser internal loop.
 
 * `CONTINUE`
   
@@ -505,11 +505,11 @@ Result of these visitor's actions controls traverser internal loop.
 
   quit (break) the loop
 
-Visitor's actions are methods of [TraverseVisitor][TraverseVisitor] interface called by [Traverser][Traverser] at the specific moment during traversal.
-When a Traverser is about to process a node very first time, it calls `enter` method, which is a **pre-order** action.
-If the result is `CONTINUE`, Traverser discovers children so they could be processed too.
-After all children the node have been processed, `Traverser` calls `leave` method to execute a **post-order** action.
-If a node has been already processed, Traverser calls `onBackRef` method to execute an action on a cyclicly referenced node.
+Visitor's actions are methods of [TraverseVisitor][TraverseVisitor] interface called by [Traverser][Traverser] at the specific moments during traversal.
+When a Traverser is about to process a node the very first time, it calls `enter` method, which is a **pre-order** action.
+If the result is `CONTINUE`, Traverser discovers children of the current node, so they could be processed too.
+After all children of the current node have been processed, `Traverser` calls `leave` method to execute a **post-order** action.
+If a node has been already processed, Traverser calls `onBackRef` method to execute an action on a **cyclicly** referenced node.
 In order to avoid infinite recursion loop, Traverser does not discover children of such node, similar to the effect of `SKIP` action result.
 
 #### Execute both pre- and post- order actions
