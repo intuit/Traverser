@@ -569,7 +569,7 @@ Found. Quitting.
 foundKleoRuby: true
 ```
 
-#### Configuration
+## Configuration
 
 It is possible to override `version` and `group` of the artifact:
 ```
