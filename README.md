@@ -55,6 +55,15 @@ Maven:
 ./gradlew build
 ```
 
+## Configuration
+
+It is possible to override `version` and `group` of the artifact:
+```
+./gradlew clean -Pproject.version=1.0.0-SNAPSHOT -Pproject.group=com.intuit.commons  publishToMavenLocal
+```
+where `project.version` and `project.group` are used to control desired group and version. 
+Artifact name is configured with `rootProject.name` property in *settings.gradle*.
+
 ## Learn by example 
 
 Representing hierarchy of a medium-sized company is good example to illustrate key features of the traverser.  
@@ -579,15 +588,6 @@ enter: Kleo Ruby
 Found. Quitting.
 foundKleoRuby: true
 ```
-
-## Configuration
-
-It is possible to override `version` and `group` of the artifact:
-```
-./gradlew clean -Pproject.version=1.0.0-SNAPSHOT -Pproject.group=com.intuit.commons  publishToMavenLocal
-```
-where `project.version` and `project.group` are used to control desired group and version. 
-Artifact name is configured with `rootProject.name` property in *settings.gradle*.
 
 ## Technologies Used
 
