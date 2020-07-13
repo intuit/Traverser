@@ -426,27 +426,16 @@ Nodes are enumerated in the breadth-first order
 
 ```java
 // populate the company according example at the top of this discussion
-Company c = new Company("Company")
-    .businessEntity(new BusinessEntity("BU-Pacific")
-        .team(new Team("PD=Product Development")
-            .member(new Member("Sylvester Moonstone"))
-            .member(new Member("John Smith"))
-            .member(new Member("Lucy Gold")))
-        .team(new Team("SL=Sales Department")
-            .member(new Member("Nick Citrine"))
-            .member(new Member("Kleo Ruby")))
-        .team(new Team("MG=Management")
-            .member(new Member("Anna Peridot"))));
+Company c = ...
 
 // create breadth-first pre-order iterator
 TraversingIterator<Company> i = Traverser
     .breadthFirst(Node::getChildren)
     .preOrderIterator(c);
 
-// print names of the nodes in DFS sequence
+// print names of the nodes in BFS sequence
 while (i.hasNext()) {
-    Node node = i.next();
-    System.out.println(node.getName());
+    ...
 }
 ``` 
 Output:
@@ -477,7 +466,7 @@ TraversingIterator<Company> i = Traverser
     .breadthFirst(Node::getChildren)
     .postOrderIterator(c);
 
-// print names of the nodes in DFS sequence
+// print names of the nodes in BFS sequence
 while (i.hasNext()) {
 ...
 }
@@ -524,17 +513,7 @@ In order to avoid infinite recursion loop, Traverser does not discover children 
 #### Execute both pre- and post- order actions
 ```java
 // populate the company according example at the top of this discussion
-Company c = new Company("Company")
-    .businessEntity(new BusinessEntity("BU-Pacific")
-        .team(new Team("PD=Product Development")
-            .member(new Member("Sylvester Moonstone"))
-            .member(new Member("John Smith"))
-            .member(new Member("Lucy Gold")))
-        .team(new Team("SL=Sales Department")
-            .member(new Member("Nick Citrine"))
-            .member(new Member("Kleo Ruby")))
-        .team(new Team("MG=Management")
-            .member(new Member("Anna Peridot"))));
+Company c = ...;
 
 // create depth-first traverser and execute it
 boolean foundKleoRuby = Traverser
