@@ -12,6 +12,14 @@ Detailed description of a change
 ----
 -->
 
+# 1.0.1
+## Release Notes
+
+### Remove dependencies on unused artifacts 
+
+`Apache collections` and `slf4j` dependencies are removed, since no functionality is in use from these artifacts.
+
+----
 
 # 1.0.0
 ## Release Notes
@@ -20,4 +28,3 @@ Detailed description of a change
 
 Standalone release of the traverser as oneself artifact. 
 
-----
