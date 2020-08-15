@@ -90,7 +90,7 @@ Company
               Anna Peridot                  
 ```
 
-_Disclaimer: Names, characters are businesses are used in fictitious manner. Any resemblance to actual persons, living or dead is purely coincidental._
+_Disclaimer: Names, characters and businesses are used in fictitious manner. Any resemblance to actual persons, living or dead is purely coincidental._
 
 This company structure could be represented in Java as a set of classes that implement interface `Node`
 
@@ -118,7 +118,7 @@ public interface Node {
     */
    List<Node> getChildren();
    /**
-    * Visitor patter support for Nodes 
+    * Visitor pattern support for Nodes 
     * to demonstrate double-dispatch mechanizm
     *
     * @see <a href="https://en.wikipedia.org/wiki/Visitor_Pattern">Visitor Pattern</a>
