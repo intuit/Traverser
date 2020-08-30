@@ -40,12 +40,12 @@ sonarqube {
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 publishing {
