@@ -1,5 +1,5 @@
 plugins {
-    id "java"
+    id "java-library"
     id "org.sonarqube" version "2.7"
     id 'maven-publish'
     id 'signing'
@@ -24,10 +24,10 @@ repositories {
 
 
 dependencies {
-    testCompile 'org.codehaus.groovy:groovy-all:2.3.7'
-    testCompile 'org.jmockit:jmockit:1.20'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.slf4j:slf4j-simple:1.7.13'
+    testImplementation 'org.codehaus.groovy:groovy-all:2.3.7'
+    testImplementation 'org.jmockit:jmockit:1.20'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.13'
 }
 
 sonarqube {
@@ -40,12 +40,12 @@ sonarqube {
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 publishing {
