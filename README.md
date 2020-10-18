@@ -629,7 +629,7 @@ Nick Citrine
 Kleo Ruby
 Anna Peridot
 ```
-Nodes are enumerated in the depth-first order in Scala as
+Nodes are enumerated in the breadth-first order in Scala as
 
 ```scala
 // populate the company according example at the top of this discussion
