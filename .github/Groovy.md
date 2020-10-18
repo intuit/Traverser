@@ -1,4 +1,4 @@
-# Groovy example of Traverser Library integration
+# Groovy example of Traverser Library Integration
 
 Example taken here is the traversal of a cyclic Graph. Following examples are there :
 - DFS (PreOrder & PostOrder)
@@ -74,7 +74,7 @@ class TraverserGroovyExample {
         TraversingIterator<GraphNodeImpl> graphNodeTraversingIterator = Traverser
                 .depthFirst((Function) { node -> node.getConnectedNodes()
                 	})
-                .preOrderIterator(inputNode);
+                .preOrderIterator(inputNode)
 
         println("Following is Pre Order Depth First Traversal starting from inputNode = " + inputNode.getIndex())
         while (graphNodeTraversingIterator.hasNext()) {
@@ -86,7 +86,7 @@ class TraverserGroovyExample {
     def postOrderDFS(GraphNode inputNode) {
         TraversingIterator<GraphNodeImpl> graphNodeTraversingIterator = Traverser
                 .depthFirst((Function) { node -> node.getConnectedNodes() })
-                .postOrderIterator(inputNode);
+                .postOrderIterator(inputNode)
 
         println("Following is Post Order Depth First Traversal starting from inputNode = " + inputNode.getIndex())
         while (graphNodeTraversingIterator.hasNext()) {
@@ -99,7 +99,7 @@ class TraverserGroovyExample {
     def preOrderBFS(GraphNode inputNode) {
         TraversingIterator<GraphNodeImpl> graphNodeTraversingIterator = Traverser
                 .breadthFirst((Function) { node -> node.getConnectedNodes() })
-                .preOrderIterator(inputNode);
+                .preOrderIterator(inputNode)
 
         println("Following is Pre Order Breadth First Traversal starting from inputNode = " + inputNode.getIndex())
         while (graphNodeTraversingIterator.hasNext()) {
@@ -111,7 +111,7 @@ class TraverserGroovyExample {
     def postOrderBFS(GraphNode inputNode) {
         TraversingIterator<GraphNodeImpl> graphNodeTraversingIterator = Traverser
                 .breadthFirst((Function) { node -> node.getConnectedNodes() })
-                .postOrderIterator(inputNode);
+                .postOrderIterator(inputNode)
 
         println("Following is Post Order Breadth First Traversal starting from inputNode = " + inputNode.getIndex())
         while (graphNodeTraversingIterator.hasNext()) {
