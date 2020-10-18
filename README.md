@@ -568,7 +568,7 @@ Found. Quitting.
 foundKleoRuby: true
 ```
 
-[Groovy Examples] (.github/Groovy.md) can be found here.
+Look here for [Groovy Examples](.github/Groovy.md).
 
 ## Technologies Used
 
