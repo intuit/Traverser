@@ -568,6 +568,8 @@ Found. Quitting.
 foundKleoRuby: true
 ```
 
+[Groovy Examples] (Groovy.md) can be found here.
+
 ## Technologies Used
 
 Minimum required: Java 8
