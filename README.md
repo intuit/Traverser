@@ -272,6 +272,101 @@ public class Member implements Node {
 }
 ```
 
+The same company structure could be represented in Scala as a set of classes that implement interface `Node` as below
+```scala
+import java.util
+
+sealed trait Node {
+  def getName: String
+
+  def getChildren: java.util.ArrayList[Node]
+
+  def accept[U](data: U, visitor: NodeVisitor[U]): U
+}
+
+sealed trait NodeVisitor[U] {
+  def visitCompany(company: Company, data: U): U
+
+  def visitBusinessEntity(businessEntity: BusinessEntity, data: U): U
+
+  def visitTeam(team: Team, data: U): U
+
+  def visitMember(member: Member, data: U): U
+}
+
+class Company(name: String) extends Node {
+  val businessEntities = new util.ArrayList[BusinessEntity]
+
+  def apply(name: String): Company = new Company(name)
+
+  def businessEntity(businessEntity: BusinessEntity): Company = {
+    businessEntities.add(businessEntity)
+    this
+  }
+
+  def getName: String = name
+
+  def getBusinessEntities: util.ArrayList[BusinessEntity] = businessEntities
+
+  def getChildren: java.util.ArrayList[Node] = getBusinessEntities.asInstanceOf[java.util.ArrayList[Node]]
+
+  def accept[U](data: U, visitor: NodeVisitor[U]): U = { // double-dispatch to the custom method for Company nodes
+    visitor.visitCompany(this, data)
+  }
+}
+
+
+class BusinessEntity(name: String) extends Node {
+  val teams = new util.ArrayList[Team]
+
+  def team(team: Team): BusinessEntity = {
+    teams.add(team)
+    this
+  }
+
+  def getTeams: util.ArrayList[Team] = teams
+
+  def getName: String = name
+
+  def getChildren: java.util.ArrayList[Node] = getTeams.asInstanceOf[java.util.ArrayList[Node]]
+
+  def accept[U](data: U, visitor: NodeVisitor[U]): U = { // double-dispatch to the custom method for BusinessEntity nodes
+    visitor.visitBusinessEntity(this, data)
+  }
+}
+
+class Team(name: String) extends Node {
+  val members = new util.ArrayList[Member]
+
+  def member(member: Member): Team = {
+    members.add(member)
+    this
+  }
+
+  def getMembers: util.ArrayList[Member] = members
+
+  def getName: String = name
+
+  def getChildren: java.util.ArrayList[Node] = getMembers.asInstanceOf[java.util.ArrayList[Node]]
+
+  def visitTeam[U](data: U, visitor: NodeVisitor[U]): U = { // double-dispatch to the custom method for Team nodes
+    visitor.visitTeam(this, data)
+  }
+
+  def accept[U](data: U, visitor: NodeVisitor[U]): U = ???
+}
+
+class Member(name: String) extends Node {
+  def getName: String = name
+
+  def getChildren: java.util.ArrayList[Node] = new util.ArrayList[Node]()
+
+  def accept[U](data: U, visitor: NodeVisitor[U]): U = { // double-dispatch to the custom method for Member nodes
+    visitor.visitMember(this, data)
+  }
+}
+```
+
 ## Explore 
 
 ### Integration: children provider  
@@ -382,6 +477,47 @@ MG=Management
 Anna Peridot
 ```
 
+Nodes are enumerated in the depth-first order in Scala as
+
+```scala
+// populate the company according example at the top of this discussion
+val company = new Company("Company")
+  .businessEntity(new BusinessEntity("BU-Pacific")
+    .team(new Team("PD=Product Development")
+      .member(new Member("Sylvester Moonstone"))
+      .member(new Member("John Smith"))
+      .member(new Member("Lucy Gold")))
+    .team(new Team("SL=Sales Department")
+      .member(new Member("Nick Citrine"))
+      .member(new Member("Kleo Ruby")))
+    .team(new Team("MG=Management")
+      .member(new Member("Anna Peridot"))));
+
+// create depth-first pre-order iterator// create depth-first pre-order iterator
+val iter = Traverser.depthFirst((_:Node).getChildren).preOrderIterator(company)
+
+// print names of the nodes in DFS sequence
+while(iter.hasNext()) {
+  val node = iter.next()
+  println(node.getName)
+}
+```
+
+Output:
+```
+Company
+BU-Pacific
+PD=Product Development
+Sylvester Moonstone
+John Smith
+Lucy Gold
+SL=Sales Department
+Nick Citrine
+Kleo Ruby
+MG=Management
+Anna Peridot
+```
+
 ##### Move to next, then perform an action:
 
 Nodes are enumerated in the depth-first reverse order 
@@ -400,6 +536,47 @@ while (i.hasNext()) {
 ...
 }
 ``` 
+
+Output:
+```
+Sylvester Moonstone
+John Smith
+Lucy Gold
+PD=Product Development
+Nick Citrine
+Kleo Ruby
+SL=Sales Department
+Anna Peridot
+MG=Management
+BU-Pacific
+Company
+```
+
+Nodes are enumerated in the depth-first reverse order in Scala as
+
+```scala
+// populate the company according example at the top of this discussion
+val company = new Company("Company")
+  .businessEntity(new BusinessEntity("BU-Pacific")
+    .team(new Team("PD=Product Development")
+      .member(new Member("Sylvester Moonstone"))
+      .member(new Member("John Smith"))
+      .member(new Member("Lucy Gold")))
+    .team(new Team("SL=Sales Department")
+      .member(new Member("Nick Citrine"))
+      .member(new Member("Kleo Ruby")))
+    .team(new Team("MG=Management")
+      .member(new Member("Anna Peridot"))));
+
+// create depth-first pre-order iterator// create depth-first pre-order iterator
+val iter = Traverser.depthFirst((_:Node).getChildren).postOrderIterator(company)
+
+// print names of the nodes in DFS sequence
+while(iter.hasNext()) {
+  val node = iter.next()
+  println(node.getName)
+}
+```
 
 Output:
 ```
@@ -452,6 +629,34 @@ Nick Citrine
 Kleo Ruby
 Anna Peridot
 ```
+Nodes are enumerated in the breadth-first order in Scala as
+
+```scala
+// populate the company according example at the top of this discussion
+val company = ...
+
+// create breadth-first pre-order iterator
+val iter = Traverser.breadthFirst((_:Node).getChildren).preOrderIterator(company)
+
+// print names of the nodes in BFS sequence
+while (iter.hasNext()) {
+    ...
+}
+``` 
+Output:
+```
+Company
+BU-Pacific
+PD=Product Development
+SL=Sales Department
+MG=Management
+Sylvester Moonstone
+John Smith
+Lucy Gold
+Nick Citrine
+Kleo Ruby
+Anna Peridot
+```
 
 ##### Move to next, then perform an action:
 
@@ -465,6 +670,34 @@ Company c = ...
 TraversingIterator<Company> i = Traverser
     .breadthFirst(Node::getChildren)
     .postOrderIterator(c);
+
+// print names of the nodes in BFS sequence
+while (i.hasNext()) {
+...
+}
+``` 
+Output
+```
+Company
+BU-Pacific
+PD=Product Development
+SL=Sales Department
+MG=Management
+Sylvester Moonstone
+John Smith
+Lucy Gold
+Nick Citrine
+Kleo Ruby
+Anna Peridot
+```
+Nodes are enumerated in breadth-first opposite order (same as breadth-first order) in Scala as
+
+```scala
+// populate the company according example at the top of this discussion
+val company = ...
+
+// create breadth-first post-order iterator
+val iter = Traverser.breadthFirst((_:Node).getChildren).postOrderIterator(company)
 
 // print names of the nodes in BFS sequence
 while (i.hasNext()) {
