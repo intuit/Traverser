@@ -801,6 +801,8 @@ Found. Quitting.
 foundKleoRuby: true
 ```
 
+Look here for [Groovy Examples](.github/Groovy.md).
+
 ## Technologies Used
 
 Minimum required: Java 8
