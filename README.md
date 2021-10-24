@@ -367,6 +367,9 @@ class Member(name: String) extends Node {
 }
 ```
 
+The same company structure could be represented in Kotlin
+[Company Model]: examples/src/main/kotlin/model.kt
+
 ## Explore 
 
 ### Integration: children provider  
@@ -518,6 +521,56 @@ MG=Management
 Anna Peridot
 ```
 
+Nodes are enumerated in the depth-first order in Kotlin as
+
+```kotlin
+import com.intuit.commons.traverser.Traverser
+import com.intuit.commons.traverser.TraversingIterator
+
+fun main() {
+    // populate the company according example at the top of this discussion
+    val c = Company("Company")
+            .businessEntity(BusinessEntity("BU-Pacific")
+                    .team(Team("PD=Product Development")
+                            .member(Member("Sylvester Moonstone"))
+                            .member(Member("John Smith"))
+                            .member(Member("Lucy Gold")))
+                    .team(Team("SL=Sales Department")
+                            .member(Member("Nick Citrine"))
+                            .member(Member("Kleo Ruby")))
+                    .team(Team("MG=Management")
+                            .member(Member("Anna Peridot"))))
+
+    // create depth-first pre-order iterator
+    val i: TraversingIterator<Node> = Traverser
+            .depthFirst<Node>(Node::children)
+            .preOrderIterator(c)
+
+    // print names of the nodes in DFS sequence
+    while (i.hasNext()) {
+        val node: Node = i.next()
+        println(node.name)
+    }
+}
+```
+
+Full version of source code [depth-first.kt]: examples/src/test/kotlin/depth-first.kt
+
+Output:
+```
+Company
+BU-Pacific
+PD=Product Development
+Sylvester Moonstone
+John Smith
+Lucy Gold
+SL=Sales Department
+Nick Citrine
+Kleo Ruby
+MG=Management
+Anna Peridot
+```
+
 ##### Move to next, then perform an action:
 
 Nodes are enumerated in the depth-first reverse order 
@@ -593,6 +646,26 @@ BU-Pacific
 Company
 ```
 
+Nodes are enumerated in the depth-first reverse order in Kotlin as
+```kotlin
+fun main() {
+    // populate the company according example at the top of this discussion
+    val c = ...
+
+    // create depth-first post-order iterator
+    val i: TraversingIterator<Node> = Traverser
+            .depthFirst(Node::children)
+            .postOrderIterator(c)
+
+    // print names of the nodes in DFS sequence
+    while (i.hasNext()) {
+        ...
+    }
+}
+```
+
+Full version of source code [depth-first-reverse.kt]: examples/src/test/kotlin/epth-first-reverse.ktd
+
 #### Breadth-First traversing
 
 For a given tree or graph node, breadth-first always follows siblings, before it considers children.
@@ -658,6 +731,26 @@ Kleo Ruby
 Anna Peridot
 ```
 
+Nodes are enumerated in the breadth-first order in Kotlin as
+
+```kotlin
+fun main() {
+    // populate the company according example at the top of this discussion
+    val c = ...
+
+    // create breadth-first pre-order iterator
+    val i: TraversingIterator<Node> = Traverser
+            .breadthFirst(Node::children)
+            .preOrderIterator(c)
+
+    // print names of the nodes in DFS sequence
+    while (i.hasNext()) {
+        ...
+    }
+}
+```
+Full version of source code [breadth-first.kt]: examples/src/test/kotlin/breadth-first.kt
+
 ##### Move to next, then perform an action:
 
 Nodes are enumerated in breadth-first opposite order (same as breadth-first order)
@@ -718,6 +811,28 @@ Nick Citrine
 Kleo Ruby
 Anna Peridot
 ```
+
+Nodes are enumerated in breadth-first opposite order (same as breadth-first order) in Kotlin as
+
+```kotlin
+fun main() {
+    // populate the company according example at the top of this discussion
+    val c = ...
+
+    // create breadth-first pre-order iterator
+    val i: TraversingIterator<Node> = Traverser
+            .breadthFirst(Node::children)
+            .postOrderIterator(c)
+
+    // print names of the nodes in DFS sequence
+    while (i.hasNext()) {
+        ...
+    }
+}
+``` 
+Full version of source code [breadth-first-opposite.kt]: examples/src/test/kotlin/breadth-first-opposite.kt
+
+
 ### Traversal loop control
 
 At the core, Traverser enumerates nodes in the internal traversal loop.       
@@ -802,6 +917,8 @@ foundKleoRuby: true
 ```
 
 Look here for [Groovy Examples](.github/Groovy.md).
+
+Similar Kotlin example [depth-first-execute.kt] :examples/src/test/kotlin/depth-first-execute.kt
 
 ## Technologies Used
 
