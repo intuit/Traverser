@@ -554,7 +554,7 @@ fun main() {
 }
 ```
 
-Full version of source code [depth-first.kt]: examples/src/test/kotlin/depth-first.kt
+Full version of source code [depth-first.kt](examples/src/test/kotlin/depth-first.kt)
 
 Output:
 ```
@@ -664,7 +664,7 @@ fun main() {
 }
 ```
 
-Full version of source code [depth-first-reverse.kt]: examples/src/test/kotlin/epth-first-reverse.ktd
+Full version of source code [depth-first-reverse.kt](examples/src/test/kotlin/depth-first-reverse.kt)
 
 #### Breadth-First traversing
 
@@ -749,7 +749,7 @@ fun main() {
     }
 }
 ```
-Full version of source code [breadth-first.kt]: examples/src/test/kotlin/breadth-first.kt
+Full version of source code [breadth-first.kt](examples/src/test/kotlin/breadth-first.kt)
 
 ##### Move to next, then perform an action:
 
@@ -830,7 +830,7 @@ fun main() {
     }
 }
 ``` 
-Full version of source code [breadth-first-opposite.kt]: examples/src/test/kotlin/breadth-first-opposite.kt
+Full version of source code [breadth-first-opposite.kt](examples/src/test/kotlin/breadth-first-opposite.kt)
 
 
 ### Traversal loop control
@@ -918,7 +918,7 @@ foundKleoRuby: true
 
 Look here for [Groovy Examples](.github/Groovy.md).
 
-Similar Kotlin example [depth-first-execute.kt] :examples/src/test/kotlin/depth-first-execute.kt
+Similar Kotlin example [depth-first-execute.kt](examples/src/test/kotlin/depth-first-execute.kt)
 
 ## Technologies Used
 
