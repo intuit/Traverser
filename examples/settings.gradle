@@ -1,0 +1,3 @@
+rootProject.name = 'examples'
+// Gradle 5.0 compatibility 
+// enableFeaturePreview('STABLE_PUBLISHING')
