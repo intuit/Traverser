@@ -368,7 +368,7 @@ class Member(name: String) extends Node {
 ```
 
 The same company structure could be represented in Kotlin
-[Company Model]: examples/src/main/kotlin/model.kt
+[Company Model](examples/src/main/kotlin/model.kt)
 
 ## Explore 
 
