@@ -1,0 +1,242 @@
+/*
+Define Tree case class first, which defines the data type of a tree. Consider this is like struct in C++
+Define method to build a binary tree
+*/
+case class Tree[+T](attr : T, left :Option[Tree[T]], right : Option[Tree[T]])
+/*
+The above tree data structure is defined:
+Tree(Stored value, left pointer, right pointer) 
+*/
+def buildBinTree[T](lines: IndexedSeq[IndexedSeq[T]]) = {
+  def recurseFunc[T](lines: IndexedSeq[IndexedSeq[T]]): IndexedSeq[Tree[T]] = lines match {
+    case line +: IndexedSeq() => line.map(Tree(_, None, None))
+    case line +: rest => {
+      val prevTrees = recurseFunc(rest)
+      (line, prevTrees.grouped(2).toIndexedSeq).zipped
+      .map{case (v, IndexedSeq(left, right)) => Tree(v, Some(left), Some(right))}
+    }
+    case _ => IndexedSeq.empty
+  }
+  recurseFunc(lines).headOption
+}
+/*
+Get some data to be store in a tree
+*/
+val values = """1
+2 3
+4 5 6 7
+""".stripMargin
+//Build the tree
+val tree = buildBinTree(values.lines.map(_.filterNot(_ == ' ').toIndexedSeq).toIndexedSeq)
+/*
+Output:
+tree: Option[Tree[Char]] = Some(Tree(1,Some(Tree(2,Some(Tree(4,None,None)),Some(Tree(5,None,None)))),Some(Tree(3,Some(Tree(6,None,None)),Some(Tree(7,None,None))))))
+*/
+// Pre Order left to right-->rootLeftRight(node)
+def rootLeftRight(node: Option[Tree[Char]]): Unit ={
+if (node.filter(_ != None)!=None)
+      {
+         node.foreach{ i => println(i.attr)}
+         node.foreach{i=>rootLeftRight(i.left)}
+         node.foreach(i=>rootLeftRight(i.right))
+      }
+}
+//run it
+rootLeftRight(tree)
+/*
+1
+2
+4
+5
+3
+6
+7
+*/
+//Pre Order right to left-->rootRightLeft(node)
+def rootRightLeft(node: Option[Tree[Char]]): Unit ={
+if (node.filter(_ != None)!=None)
+      {
+         node.foreach{ i => println(i.attr)}
+         node.foreach{i=>rootRightLeft(i.right)}
+         node.foreach(i=>rootRightLeft(i.left))
+      }
+}
+//run it
+rootRightLeft(tree)
+/*
+Output:
+1
+3
+7
+6
+2
+5
+4
+*/
+def leftRightRoot(node: Option[Tree[Char]]): Unit ={
+if (node.filter(_.attr != None)!=None)
+      {
+         node.foreach{i=>leftRightRoot(i.left)}
+         node.foreach(i=>leftRightRoot(i.right))
+         node.foreach{ i => println(i.attr)}
+      }
+}
+//Post Order left to right-->leftRightRoot(node)
+def leftRightRoot(node: Option[Tree[Char]]): Unit ={
+if (node.filter(_.attr != None)!=None)
+      {
+         node.foreach{i=>leftRightRoot(i.left)}
+         node.foreach(i=>leftRightRoot(i.right))
+         node.foreach{ i => println(i.attr)}
+      }
+}
+//run it
+leftRightRoot(tree)
+/*
+Output:
+4
+5
+2
+6
+7
+3
+1
+*/
+//Post Order right to left-->rightLeftRoot(node)
+def rightLeftRoot(node: Option[Tree[Char]]): Unit ={
+if (node.filter(_.attr != None)!=None)
+      {
+         node.foreach{i=>rightLeftRoot(i.right)}
+         node.foreach(i=>rightLeftRoot(i.left))
+         node.foreach{ i => println(i.attr)}
+      }       
+}
+//run it
+rightLeftRoot(tree)
+/*
+Output:
+7
+6
+3
+5
+4
+2
+1
+*/
+//In Order left to right-->leftRootRight(node)
+def leftRootRight(node: Option[Tree[Char]]): Unit ={
+if (node.filter(_.attr != None)!=None)
+      {
+         node.foreach{i=>leftRootRight(i.left)}
+         node.foreach{ i => println(i.attr)}
+         node.foreach(i=>leftRootRight(i.right))
+      }       
+}
+//run it
+leftRootRight(tree)
+/*
+Output:
+4
+2
+5
+1
+6
+3
+7
+*/
+//In Order right to left-->rightRootLeft(node)
+def rightRootLeft(node: Option[Tree[Char]]): Unit ={
+if (node.filter(_.attr != None)!=None)
+      {
+         node.foreach{i=>rightRootLeft(i.right)}
+         node.foreach{ i => println(i.attr)}
+         node.foreach(i=>rightRootLeft(i.left))
+      }       
+}
+//run it
+rightRootLeft(tree)
+/*
+Output:
+7
+3
+6
+1
+5
+2
+4
+*/
+//Breadth first traversal from left to right--> breadthFirstTraversalLeftRight(node)
+//Helper function to calculate depth of tree needed by BFS
+def getBinTreeDepth(node: Option[Tree[Char]], depth: Array[Int]=Array(0)): Unit = {
+    if (node.filter(_.attr != None)!=None)
+      {
+       node.foreach(i=>getBinTreeDepth(i.left, depth))
+       depth(0)=depth(0)+1
+}   
+}
+def breadthFirstTraversalLeftRight(node: Option[Tree[Char]]): Unit={
+    def printGivenLevel(node: Option[Tree[Char]], level: Int):  Unit={
+        if (node.filter(_.attr != None)!=None)
+          {
+            if (level==1)
+                {
+                node.foreach{ i => print(i.attr)}
+                print(" ")
+                }   
+            else if (level>1)
+              {
+                node.foreach{i=>printGivenLevel(i.left, level-1)}
+                node.foreach{i=>printGivenLevel(i.right, level-1)}
+              }
+    }
+    }
+    var depth=Array(0)
+    getBinTreeDepth(node,depth)
+    for (d<-1 to depth(0))
+        {
+        printGivenLevel(node, d)
+        println(" ")
+        }
+}
+//Run it
+breadthFirstTraversalLeftRight(tree)
+/*
+1  
+2 3  
+4 5 6 7
+*/
+//Breadth first traversal from right to left--> breadthFirstTraversalRightLeft(node)
+def breadthFirstTraversalRightLeft(node: Option[Tree[Char]]): Unit={
+    def printGivenLevel(node: Option[Tree[Char]], level: Int):  Unit={
+        if (node.filter(_.attr != None)!=None)
+          {
+            if (level==1)
+                {
+                node.foreach{ i => print(i.attr)}
+                print(" ")
+                }   
+            else if (level>1)
+              {
+                node.foreach{i=>printGivenLevel(i.right, level-1)}
+                node.foreach{i=>printGivenLevel(i.left, level-1)}
+              }
+    }
+    }
+    
+    
+    var depth=Array(0)
+    getBinTreeDepth(node,depth)
+    for (d<-1 to depth(0))
+        {
+        printGivenLevel(node, d)
+        println(" ")
+        }  
+}
+//run it
+breadthFirstTraversalRightLeft(tree)
+/*
+Output:
+1  
+3 2  
+7 6 5 4
+*/
