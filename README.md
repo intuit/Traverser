@@ -917,6 +917,7 @@ foundKleoRuby: true
 ```
 
 Look here for [Groovy Examples](.github/Groovy.md).
+Look here for [Kotlin Examples](.github/Kotlin.md).
 
 Similar Kotlin example [depth-first-execute.kt](examples/src/test/kotlin/depth-first-execute.kt)
 
